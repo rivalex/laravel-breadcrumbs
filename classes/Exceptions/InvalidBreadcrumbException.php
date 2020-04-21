@@ -33,7 +33,7 @@ class InvalidBreadcrumbException extends BreadcrumbsException implements Provide
     public function getSolution(): Solution
     {
         // Determine the breadcrumbs file name
-        $files = (array)config('breadcrumbs.files');
+        $files = (array) config('breadcrumbs.files');
 
         if (count($files) === 1) {
             $file = Str::replaceFirst(base_path() . DIRECTORY_SEPARATOR, '', $files[0]);

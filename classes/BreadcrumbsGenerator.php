@@ -61,7 +61,7 @@ class BreadcrumbsGenerator
      */
     protected function call(string $name, array $params): void
     {
-        if (! isset($this->callbacks[ $name ])) {
+        if (!isset($this->callbacks[$name])) {
             throw new InvalidBreadcrumbException($name);
         }
 

@@ -73,7 +73,7 @@ class BreadcrumbsManager
      * @throws DuplicateBreadcrumbException If the given name has already been
      *     used.
      */
-    public function for(string $name, callable $callback): void
+    public function for (string $name, callable $callback): void
     {
         if (isset($this->callbacks[$name])) {
             throw new DuplicateBreadcrumbException($name);
