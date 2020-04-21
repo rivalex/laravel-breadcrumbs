@@ -71,12 +71,12 @@ class BreadcrumbsServiceProvider extends ServiceProvider implements DeferrablePr
         // Load the routes/breadcrumbs.php file, or other configured file(s)
         $files = config('breadcrumbs.files');
 
-        if (! $files) {
+        if (!$files) {
             return;
         }
 
         // If it is set to the default value and that file doesn't exist, skip loading it rather than causing an error
-        if ($files === base_path('routes/breadcrumbs.php') && ! is_file($files)) {
+        if ($files === base_path('routes/breadcrumbs.php') && !is_file($files)) {
             return;
         }
 
