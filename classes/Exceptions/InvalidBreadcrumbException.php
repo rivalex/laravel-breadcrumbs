@@ -43,8 +43,7 @@ class InvalidBreadcrumbException extends BreadcrumbsException implements Provide
 
         // Determine the current route name
         $route = Route::current();
-        $routeName = $route ? $route->getName() : null;
-        if ($routeName) {
+        if ($route->getName()) {
             $url = "route('{$this->name}')";
         } else {
             $url = "url('" . Request::path() . "')";
