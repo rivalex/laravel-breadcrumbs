@@ -1,0 +1,49 @@
+{
+    "name": "rivalex/laravel-breadcrumbs",
+    "description": "A simple Laravel-style way to create breadcrumbs with Font Awesome support.",
+    "keywords": [
+        "laravel"
+    ],
+    "homepage": "https://github.com/rivalex/laravel-breadcrumbs",
+    "authors": [
+        {
+            "name": "Rivalex",
+            "email": "info@rivalex.com"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^7.2",
+        "facade/ignition-contracts": "^1.0",
+        "laravel/framework": "^5.0|^6.0|^7.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": ">=3.6",
+        "phpunit/phpunit": "^7.0|^8.0",
+        "php-coveralls/php-coveralls": "^2.0",
+        "spatie/phpunit-snapshot-assertions": "^2.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Rivalex\\Breadcrumbs\\": "classes/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\": "tests/",
+            "BreadcrumbsTests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Rivalex\\Breadcrumbs\\BreadcrumbsServiceProvider"
+            ],
+            "aliases": {
+                "Breadcrumbs": "Rivalex\\Breadcrumbs\\Facades\\Breadcrumbs"
+            }
+        }
+    }
+}
