@@ -27,7 +27,7 @@ class DuplicateBreadcrumbException extends BreadcrumbsException implements Provi
     public function getSolution(): Solution
     {
         // Determine the breadcrumbs file name(s)
-        $files = (array)config('breadcrumbs.files');
+        $files = (array) config('breadcrumbs.files');
 
         $basePath = base_path() . DIRECTORY_SEPARATOR;
         foreach ($files as &$file) {
