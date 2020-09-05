@@ -5,13 +5,13 @@
             @if ($loop->last)
 
                 <li class="active">
-                    {{ $breadcrumb->title }}
+                    {!! $breadcrumb->title !!}
                 </li>
 
             @elseif ($breadcrumb->url)
 
                 <li>
-                    <a href="{{ $breadcrumb->url }}">{{ $breadcrumb->title }}</a>
+                    <a href="{{ $breadcrumb->url }}">{!! $breadcrumb->title !!}</a>
                     <span class="divider">/</span>
                 </li>
 
@@ -19,7 +19,7 @@
 
                 {{-- Using .active to give it the right colour (grey by default) --}}
                 <li class="active">
-                    {{ $breadcrumb->title }}
+                    {!! $breadcrumb->title !!}
                     <span class="divider">/</span>
                 </li>
 
