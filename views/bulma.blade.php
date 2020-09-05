@@ -6,15 +6,15 @@
 
                 @if ($loop->last)
                     @if ($breadcrumb->url)
-                        <li class="is-active"><a href="{{ $breadcrumb->url }}" aria-current="page">{{ $breadcrumb->title }}</a></li>
+                        <li class="is-active"><a href="{{ $breadcrumb->url }}" aria-current="page">{!! $breadcrumb->title !!}</a></li>
                     @else
-                        <li class="is-active"><a aria-current="page">{{ $breadcrumb->title }}</a></li>
+                        <li class="is-active"><a aria-current="page">{!! $breadcrumb->title !!}</a></li>
                     @endif
                 @else
                     @if ($breadcrumb->url)
-                        <li><a href="{{ $breadcrumb->url }}">{{ $breadcrumb->title }}</a></li>
+                        <li><a href="{{ $breadcrumb->url }}">{!! $breadcrumb->title !!}</a></li>
                     @else
-                        <li class="is-active"><a>{{ $breadcrumb->title }}</a></li>
+                        <li class="is-active"><a>{!! $breadcrumb->title !!}</a></li>
                     @endif
                 @endif
 
