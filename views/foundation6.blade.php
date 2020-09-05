@@ -5,11 +5,11 @@
             @foreach ($breadcrumbs as $breadcrumb)
 
                 @if ($loop->last)
-                    <li class="current"><span class="show-for-sr">Current:</span> {{ $breadcrumb->title }}</li>
+                    <li class="current"><span class="show-for-sr">Current:</span> {!! $breadcrumb->title !!}</li>
                 @elseif ($breadcrumb->url)
-                    <li><a href="{{ $breadcrumb->url }}">{{ $breadcrumb->title }}</a></li>
+                    <li><a href="{{ $breadcrumb->url }}">{!! $breadcrumb->title !!}</a></li>
                 @else
-                    <li class="disabled">{{ $breadcrumb->title }}</li>
+                    <li class="disabled">{!! $breadcrumb->title !!}</li>
                 @endif
 
             @endforeach
