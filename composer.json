@@ -14,8 +14,8 @@
     "license": "MIT",
     "require": {
         "php": "^7.2|^8.0",
-        "facade/ignition-contracts": "^1.0|^2.0",
-        "laravel/framework": "^5.0|^6.0|^7.0|^8.0"
+        "facade/ignition-contracts": "^2.0",
+        "laravel/framework": "^7.0|^8.0"
     },
     "require-dev": {
         "orchestra/testbench": ">=3.6",
