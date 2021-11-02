@@ -10,6 +10,8 @@ return [
     | Choose a view to display when Breadcrumbs::render() is called.
     | Built in templates are:
     |
+    | - 'breadcrumbs::bootstrap5icons'  - Bootstrap 5 with Font Awesome support
+    | - 'breadcrumbs::bootstrap5'       - Bootstrap 5
     | - 'breadcrumbs::bootstrap4icons'  - Bootstrap 4 with Font Awesome support
     | - 'breadcrumbs::bootstrap4'       - Bootstrap 4
     | - 'breadcrumbs::bootstrap3'       - Bootstrap 3
@@ -24,7 +26,7 @@ return [
     |
     */
 
-    'view' => 'breadcrumbs::bootstrap4',
+    'view' => 'breadcrumbs::bootstrap5',
 
     /*
     |--------------------------------------------------------------------------
