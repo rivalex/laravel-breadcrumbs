@@ -42,3 +42,17 @@ jobs:
 
       - name: Run tests
         run: vendor/bin/phpunit
+
+  # Single, stable status check for the branch ruleset: it does not change when the matrix above does.
+  tests-ok:
+    name: Tests passed
+    if: always()
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the matrix result
+        env:
+          RESULT: ${{ needs.tests.result }}
+        run: |
+          echo "Matrix result: $RESULT"
+          [ "$RESULT" = "success" ]
