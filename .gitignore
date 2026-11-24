@@ -173,3 +173,6 @@ fabric.properties
 /composer.lock
 .phpunit.cache/
 test-coverage/
+
+# JetBrains IDE project files
+.idea/
