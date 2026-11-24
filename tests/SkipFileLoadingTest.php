@@ -2,6 +2,10 @@
 
 namespace BreadcrumbsTests;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
+use Rivalex\Breadcrumbs\BreadcrumbsServiceProvider;
+
+#[CoversMethod(BreadcrumbsServiceProvider::class, 'registerBreadcrumbs')]
 class SkipFileLoadingTest extends TestCase
 {
     protected function getEnvironmentSetUp($app)
@@ -11,7 +15,6 @@ class SkipFileLoadingTest extends TestCase
         $app->config->set('breadcrumbs.files', []);
     }
 
-    /** @covers \Rivalex\Breadcrumbs\BreadcrumbsServiceProvider::registerBreadcrumbs */
     public function testLoading()
     {
         // I can't think of a way to actually test this since nothing is loaded -
