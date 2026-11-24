@@ -862,6 +862,12 @@ The branch ruleset requires the single `Tests passed` job, which depends on the 
 
 This project uses [Semantic Versioning](https://semver.org/).
 
+### 2.0.2 (2026-11-24)
+
+- No changes to the package code. The dist archive no longer includes `tests/`, `scripts/` and CI files.
+- CI also runs the test matrix with the lowest allowed dependencies (`--prefer-lowest`), so the minimum Laravel versions are really tested.
+- Packagist description and keywords mention Bootstrap 5 and Livewire.
+
 ### 2.0.1 (2026-11-24)
 
 - No changes to the package code. CI now has a single `Tests passed` gate job, Dependabot updates for GitHub Actions and Composer, and the README documents the pull request and release workflow.
