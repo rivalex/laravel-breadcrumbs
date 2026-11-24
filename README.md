@@ -848,7 +848,7 @@ scripts/test-coverage.sh
 
 This project uses [Semantic Versioning](https://semver.org/).
 
-### 2.0.0 (unreleased)
+### 2.0.0 (2026-11-24)
 
 - **Breaking:** require PHP 8.2+ and Laravel 12.71+ or 13.40+ (dropped Laravel 5.6 to 11 and PHP < 8.2). The minimums are the first releases that include the fixes for all known `laravel/framework` security advisories; Laravel 11 is out of security support and has no patches for them.
 - Add Livewire 3 and 4 support: route-bound breadcrumbs now work when a component re-renders in an update request.
