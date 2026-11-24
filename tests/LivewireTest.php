@@ -33,15 +33,18 @@ class LivewireTest extends TestCase
         Route::name('post')->get('/post/{post}', fn () => '');
 
         // Stand-in for Livewire's update endpoint: the router's "current" route during a component update
-        Route::name('test.update')->post('/test/update', fn () => Breadcrumbs::generate()->pluck('title')->all());
+        Route::name('test.livewire.update')->post('/test/update', fn () => Breadcrumbs::generate()->pluck('title')->all());
+
+        // A normal page: must never honour a (forged) Livewire snapshot
+        Route::name('forged')->post('/test/forged', fn () => Breadcrumbs::generate()->pluck('title')->all());
     }
 
-    private function livewireUpdate(string $path, string $method = 'GET', bool $isLivewire = true)
+    private function livewireUpdate(string $path, string $method = 'GET', bool $isLivewire = true, string $uri = '/test/update')
     {
         $snapshot = json_encode(['memo' => ['path' => $path, 'method' => $method]]);
 
         return $this->postJson(
-            '/test/update',
+            $uri,
             ['components' => [['snapshot' => $snapshot]]],
             $isLivewire ? ['X-Livewire' => 'true'] : []
         );
@@ -61,8 +64,25 @@ class LivewireTest extends TestCase
     {
         $this->expectException(InvalidBreadcrumbException::class);
 
-        // No X-Livewire header: the "test.update" route is the current one, and it has no breadcrumb
+        // No X-Livewire header: the "test.livewire.update" route is the current one, and it has no breadcrumb
         $this->livewireUpdate('post/5', 'GET', false);
+    }
+
+    public function testForgedSnapshotIsIgnoredOutsideLivewiresUpdateRoute()
+    {
+        // The X-Livewire header and snapshot are client-controlled: on a normal route they must not select the route
+        $this->expectException(InvalidBreadcrumbException::class);
+
+        $this->livewireUpdate('post/5', 'GET', true, '/test/forged');
+    }
+
+    public function testFallsBackToTheCurrentRouteIfABoundModelDoesNotExist()
+    {
+        Route::bind('post', fn ($id) => throw new \Illuminate\Database\Eloquent\ModelNotFoundException());
+
+        $this->expectException(InvalidBreadcrumbException::class);
+
+        $this->livewireUpdate('post/5');
     }
 
     public function testFallsBackToTheCurrentRouteIfTheOriginalPageDoesNotExist()

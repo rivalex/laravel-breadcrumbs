@@ -674,7 +674,8 @@ When a component re-renders, the request goes to Livewire's update endpoint, not
 Notes:
 
 - With `wire:navigate` the whole page is swapped, so breadcrumbs placed in the layout update with it.
-- If the original page URL cannot be matched to a route, the package falls back to the current route, as it would outside Livewire.
+- This only applies on Livewire's own update endpoint (the route name ends with `livewire.update`), whose snapshot Livewire has verified. On any other route the client-supplied Livewire data is ignored.
+- If the original page URL cannot be matched to a route, or a bound model no longer exists, the package falls back to the current route.
 - A breadcrumb that depends on component state (not on the route) should be rendered with an explicit name and parameters: `Breadcrumbs::render('post', $this->post)`.
 
 ### Error solutions

@@ -301,7 +301,7 @@ class BreadcrumbsManager
     {
         $route = $this->router->current();
 
-        if ($this->isLivewireUpdateRequest()) {
+        if ($route !== null && $this->isLivewireUpdateRoute($route)) {
             return $this->resolveLivewireOriginalRoute() ?? $route;
         }
 
@@ -309,14 +309,22 @@ class BreadcrumbsManager
     }
 
     /**
-     * Whether the current request is a Livewire component update (works with Livewire 3 and 4, which are optional).
+     * Whether the given route is Livewire's update endpoint and the request is a Livewire request (Livewire 3 and 4
+     * are optional).
      *
+     * The route check is a security boundary: the original URL comes from the request body, and only Livewire's
+     * update endpoint verifies the snapshot that contains it. On any other route a client could send the
+     * X-Livewire header with a forged snapshot and make the package build breadcrumbs for a route (and models) of
+     * its choosing, bypassing that route's middleware and authorization.
+     *
+     * @param \Illuminate\Routing\Route $route
      * @return bool
      */
-    protected function isLivewireUpdateRequest(): bool
+    protected function isLivewireUpdateRoute(\Illuminate\Routing\Route $route): bool
     {
         return class_exists(\Livewire\Livewire::class)
             && app()->bound('livewire')
+            && str_ends_with((string) $route->getName(), 'livewire.update')
             && \Livewire\Livewire::isLivewireRequest();
     }
 
@@ -341,8 +349,8 @@ class BreadcrumbsManager
             $this->router->substituteImplicitBindings($route);
 
             return $route;
-        } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
-            // The original URL doesn't match any route (404/405)
+        } catch (\Symfony\Component\HttpKernel\Exception\HttpException|\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // The original URL doesn't match any route (404/405), or a bound model no longer exists
             return null;
         }
     }
