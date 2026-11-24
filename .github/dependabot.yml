@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: composer
+    directory: /
+    schedule:
+      interval: weekly
+    # This is a library: widen the allowed ranges instead of raising the minimums
+    versioning-strategy: widen
+    groups:
+      dev-dependencies:
+        dependency-type: development

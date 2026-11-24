@@ -838,11 +838,25 @@ Code coverage (requires Xdebug or PCOV):
 scripts/test-coverage.sh
 ```
 
+### Pull request workflow
+
+`master` is protected: changes go through a pull request, merged with a merge commit once the GitHub Actions checks pass. Direct pushes and force pushes are not allowed.
+
 ### Supporting a new Laravel or PHP version
 
 1. Update the PHP and Laravel matrix in [`.github/workflows/tests.yml`](.github/workflows/tests.yml) (including the matching `orchestra/testbench` version and the minimum Laravel constraint).
 2. Update the `require` and `require-dev` constraints in [`composer.json`](composer.json).
 3. Update the [Requirements](#requirements) table and the [Changelog](#changelog).
+
+The branch ruleset requires the single `Tests passed` job, which depends on the whole matrix, so it does not need updating when the matrix changes.
+
+### Releasing
+
+*For maintainers.*
+
+1. Make sure the [Requirements](#requirements) table and the [Changelog](#changelog) are up to date, and that the checks on `master` are green.
+2. Tag the release (`git tag -a 2.1.0 -m "2.1.0"`) and push it (`git push origin 2.1.0`). Release tags are protected: they cannot be moved or deleted once pushed, so tag only final code.
+3. Create the GitHub release with the changelog entry as notes. Packagist picks the tag up automatically.
 
 ## Changelog
 
