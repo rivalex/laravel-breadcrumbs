@@ -169,7 +169,6 @@ fabric.properties
 
 # End of https://www.gitignore.io/api/symfony,laravel,phpstorm
 /.editorconfig
-/.gitattributes
 /composer.lock
 .phpunit.cache/
 test-coverage/

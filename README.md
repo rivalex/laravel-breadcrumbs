@@ -844,7 +844,7 @@ scripts/test-coverage.sh
 
 ### Supporting a new Laravel or PHP version
 
-1. Update the PHP and Laravel matrix in [`.github/workflows/tests.yml`](.github/workflows/tests.yml) (including the matching `orchestra/testbench` version and the minimum Laravel constraint).
+1. Update the PHP and Laravel matrix in [`.github/workflows/tests.yml`](.github/workflows/tests.yml) (including the matching `orchestra/testbench` version and the minimum Laravel constraint). The matrix also runs with `--prefer-lowest`, so the minimums in `composer.json` must be versions that really work.
 2. Update the `require` and `require-dev` constraints in [`composer.json`](composer.json).
 3. Update the [Requirements](#requirements) table and the [Changelog](#changelog).
 
@@ -861,6 +861,10 @@ The branch ruleset requires the single `Tests passed` job, which depends on the 
 ## Changelog
 
 This project uses [Semantic Versioning](https://semver.org/).
+
+### 2.0.1 (2026-11-24)
+
+- No changes to the package code. CI now has a single `Tests passed` gate job, Dependabot updates for GitHub Actions and Composer, and the README documents the pull request and release workflow.
 
 ### 2.0.0 (2026-11-24)
 

@@ -1,8 +1,12 @@
 {
     "name": "rivalex/laravel-breadcrumbs",
-    "description": "A simple Laravel-style way to create breadcrumbs with Font Awesome support.",
+    "description": "A simple Laravel-style way to create breadcrumbs, with Bootstrap 5 and other ready-made templates, Font Awesome icons and Livewire support.",
     "keywords": [
-        "laravel"
+        "laravel",
+        "breadcrumbs",
+        "breadcrumb",
+        "bootstrap",
+        "livewire"
     ],
     "homepage": "https://github.com/rivalex/laravel-breadcrumbs",
     "authors": [
