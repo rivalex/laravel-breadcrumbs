@@ -70,7 +70,7 @@ class BreadcrumbsManager
      * @param callable $callback The callback, which should accept a Generator instance as the first parameter and may
      *     accept additional parameters.
      * @return void
-     * @throws DuplicateBreadcrumbException If the given name has already been
+     * @throws \Rivalex\Breadcrumbs\Exceptions\DuplicateBreadcrumbException If the given name has already been
      *     used.
      */
     public function for (string $name, callable $callback): void
@@ -85,13 +85,13 @@ class BreadcrumbsManager
     /**
      * Register a breadcrumb-generating callback for a page.
      *
-     * For backwards-compatibility with v5.0.0 and below.
+     * Alias of for(), kept for backwards compatibility.
      *
      * @param string $name The name of the page.
      * @param callable $callback The callback, which should accept a Generator instance as the first parameter and may
      *     accept additional parameters.
      * @return void
-     * @throws DuplicateBreadcrumbException If the given name has already been
+     * @throws \Rivalex\Breadcrumbs\Exceptions\DuplicateBreadcrumbException If the given name has already been
      *     used.
      * @see self::for()
      */
@@ -134,7 +134,7 @@ class BreadcrumbsManager
      * @param string|null $name The page name.
      * @return bool Whether there is a registered callback with that name.
      */
-    public function exists(string $name = null): bool
+    public function exists(?string $name = null): bool
     {
         if ($name === null) {
             try {
@@ -152,13 +152,13 @@ class BreadcrumbsManager
      *
      * @param string|null $name The name of the current page.
      * @param mixed ...$params The parameters to pass to the closure for the current page.
-     * @return Collection The generated breadcrumbs.
-     * @throws UnnamedRouteException if no name is given and the current route
+     * @return \Illuminate\Support\Collection The generated breadcrumbs.
+     * @throws \Rivalex\Breadcrumbs\Exceptions\UnnamedRouteException if no name is given and the current route
      *     doesn't have an associated name.
-     * @throws InvalidBreadcrumbException if the name is (or any ancestor names
+     * @throws \Rivalex\Breadcrumbs\Exceptions\InvalidBreadcrumbException if the name is (or any ancestor names
      *     are) not registered.
      */
-    public function generate(string $name = null, ...$params): Collection
+    public function generate(?string $name = null, ...$params): Collection
     {
         $origName = $name;
 
@@ -198,11 +198,11 @@ class BreadcrumbsManager
      * @param string $view The name of the view to render.
      * @param string|null $name The name of the current page.
      * @param mixed ...$params The parameters to pass to the closure for the current page.
-     * @return HtmlString The generated HTML.
-     * @throws InvalidBreadcrumbException if the name is (or any ancestor names are) not registered.
-     * @throws UnnamedRouteException if no name is given and the current route doesn't have an associated name.
+     * @return \Illuminate\Support\HtmlString The generated HTML.
+     * @throws \Rivalex\Breadcrumbs\Exceptions\InvalidBreadcrumbException if the name is (or any ancestor names are) not registered.
+     * @throws \Rivalex\Breadcrumbs\Exceptions\UnnamedRouteException if no name is given and the current route doesn't have an associated name.
      */
-    public function view(string $view, string $name = null, ...$params): HtmlString
+    public function view(string $view, ?string $name = null, ...$params): HtmlString
     {
         $breadcrumbs = $this->generate($name, ...$params);
 
@@ -216,12 +216,12 @@ class BreadcrumbsManager
      *
      * @param string|null $name The name of the current page.
      * @param mixed ...$params The parameters to pass to the closure for the current page.
-     * @return HtmlString The generated HTML.
-     * @throws InvalidBreadcrumbException if the name is (or any ancestor names are) not registered.
-     * @throws UnnamedRouteException if no name is given and the current route doesn't have an associated name.
-     * @throws ViewNotSetException if no view has been set.
+     * @return \Illuminate\Support\HtmlString The generated HTML.
+     * @throws \Rivalex\Breadcrumbs\Exceptions\InvalidBreadcrumbException if the name is (or any ancestor names are) not registered.
+     * @throws \Rivalex\Breadcrumbs\Exceptions\UnnamedRouteException if no name is given and the current route doesn't have an associated name.
+     * @throws \Rivalex\Breadcrumbs\Exceptions\ViewNotSetException if no view has been set.
      */
-    public function render(string $name = null, ...$params): HtmlString
+    public function render(?string $name = null, ...$params): HtmlString
     {
         $view = config('breadcrumbs.view');
 
@@ -238,8 +238,8 @@ class BreadcrumbsManager
      * Optionally pass a
      *
      * @return \stdClass|null The breadcrumb for the current page.
-     * @throws UnnamedRouteException if the current route doesn't have an associated name.
-     * @throws InvalidBreadcrumbException if the name is (or any ancestor names are) not registered.
+     * @throws \Rivalex\Breadcrumbs\Exceptions\UnnamedRouteException if the current route doesn't have an associated name.
+     * @throws \Rivalex\Breadcrumbs\Exceptions\InvalidBreadcrumbException if the name is (or any ancestor names are) not registered.
      */
     public function current(): ?\stdClass
     {
@@ -258,7 +258,7 @@ class BreadcrumbsManager
      * ```
      *
      * @return array A two-element array consisting of the route name (string) and any parameters (array).
-     * @throws UnnamedRouteException if the current route doesn't have an associated name.
+     * @throws \Rivalex\Breadcrumbs\Exceptions\UnnamedRouteException if the current route doesn't have an associated name.
      */
     protected function getCurrentRoute(): ?array
     {
@@ -268,7 +268,7 @@ class BreadcrumbsManager
         }
 
         // Determine the current route
-        $route = $this->router->current();
+        $route = $this->resolveCurrentRoute();
 
         // No current route - must be the 404 page
         if ($route === null) {
@@ -286,6 +286,65 @@ class BreadcrumbsManager
         $params = array_values($route->parameters());
 
         return [$name, $params];
+    }
+
+    /**
+     * Get the route of the page being viewed.
+     *
+     * During a Livewire update request the router's current route is Livewire's own update endpoint, not the page
+     * the component lives on. In that case the page's route is resolved from the URL Livewire reports instead, so
+     * route-bound breadcrumbs keep working when a component re-renders.
+     *
+     * @return \Illuminate\Routing\Route|null
+     */
+    protected function resolveCurrentRoute(): ?\Illuminate\Routing\Route
+    {
+        $route = $this->router->current();
+
+        if ($this->isLivewireUpdateRequest()) {
+            return $this->resolveLivewireOriginalRoute() ?? $route;
+        }
+
+        return $route;
+    }
+
+    /**
+     * Whether the current request is a Livewire component update (works with Livewire 3 and 4, which are optional).
+     *
+     * @return bool
+     */
+    protected function isLivewireUpdateRequest(): bool
+    {
+        return class_exists(\Livewire\Livewire::class)
+            && app()->bound('livewire')
+            && \Livewire\Livewire::isLivewireRequest();
+    }
+
+    /**
+     * Find the route of the page that rendered the Livewire component making the current update request.
+     *
+     * @return \Illuminate\Routing\Route|null Null if the original route can't be determined.
+     */
+    protected function resolveLivewireOriginalRoute(): ?\Illuminate\Routing\Route
+    {
+        try {
+            $request = \Illuminate\Http\Request::create(
+                \Livewire\Livewire::originalUrl(),
+                \Livewire\Livewire::originalMethod()
+            );
+
+            $route = $this->router->getRoutes()->match($request);
+
+            // Resolve route model bindings, so breadcrumbs receive the same models as they would on a normal request
+            $route->bind($request);
+            $this->router->substituteBindings($route);
+            $this->router->substituteImplicitBindings($route);
+
+            return $route;
+        } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+            // The original URL doesn't match any route (404/405)
+            return null;
+        }
     }
 
     /**

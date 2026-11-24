@@ -3,19 +3,11 @@ set -o nounset -o pipefail -o errexit
 cd "$(dirname "$0")/.."
 
 ################################################################################
-# Run PHPUnit and generate code coverage report (requires Xdebug).
+# Run PHPUnit and generate an HTML code coverage report (requires Xdebug or PCOV).
 ################################################################################
 
 if [ ! -d vendor ]; then
     composer install
 fi
 
-for executable in php7.4 php7.3 php7.2 php7.1; do
-    if command -v $executable >/dev/null 2>&1; then
-        exec $executable -d xdebug.coverage_enable=On vendor/bin/phpunit --coverage-html test-coverage/ "$@"
-    fi
-done
-
-if ! $has_run; then
-    exec php -d xdebug.coverage_enable=On vendor/bin/phpunit --coverage-html test-coverage/ "$@"
-fi
+exec php vendor/bin/phpunit --coverage-html test-coverage/ "$@"

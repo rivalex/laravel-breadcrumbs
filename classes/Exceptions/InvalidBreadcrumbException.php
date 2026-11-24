@@ -3,9 +3,9 @@
 namespace Rivalex\Breadcrumbs\Exceptions;
 
 use Rivalex\Breadcrumbs\BreadcrumbsException;
-use Facade\IgnitionContracts\BaseSolution;
-use Facade\IgnitionContracts\ProvidesSolution;
-use Facade\IgnitionContracts\Solution;
+use Spatie\ErrorSolutions\Contracts\BaseSolution;
+use Spatie\ErrorSolutions\Contracts\ProvidesSolution;
+use Spatie\ErrorSolutions\Contracts\Solution;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
@@ -43,7 +43,7 @@ class InvalidBreadcrumbException extends BreadcrumbsException implements Provide
 
         // Determine the current route name
         $route = Route::current();
-        if ($route->getName()) {
+        if ($route?->getName()) {
             $url = "route('{$this->name}')";
         } else {
             $url = "url('" . Request::path() . "')";

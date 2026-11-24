@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="http://localhost"><i class=" me-2" aria-hidden="true"/>Home
+                        </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><i class=" me-2" aria-hidden="true"/>Blog
+                    </li>
+    <li class="breadcrumb-item active" aria-current="page"><i class=" me-2" aria-hidden="true"/>Sample Category
+                    </li>
+  </ol>
+</nav>

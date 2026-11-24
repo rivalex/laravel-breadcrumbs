@@ -7,7 +7,7 @@ use Illuminate\Contracts\Support\Htmlable;
 use LogicException;
 use Route;
 
-// Breadcrumbs::register() was renamed Breadcrumbs::for() in v5.1.0 but is still supported for backwards compatibility.
+// Breadcrumbs::register() was renamed Breadcrumbs::for() but is still supported for backwards compatibility.
 // It's not officially deprecated, but may be in the future.
 class RegisterFunctionTest extends TestCase
 {

@@ -171,3 +171,5 @@ fabric.properties
 /.editorconfig
 /.gitattributes
 /composer.lock
+.phpunit.cache/
+test-coverage/

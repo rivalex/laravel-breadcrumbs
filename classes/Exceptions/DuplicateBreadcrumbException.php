@@ -3,9 +3,9 @@
 namespace Rivalex\Breadcrumbs\Exceptions;
 
 use Rivalex\Breadcrumbs\BreadcrumbsException;
-use Facade\IgnitionContracts\Solution;
-use Facade\IgnitionContracts\BaseSolution;
-use Facade\IgnitionContracts\ProvidesSolution;
+use Spatie\ErrorSolutions\Contracts\Solution;
+use Spatie\ErrorSolutions\Contracts\BaseSolution;
+use Spatie\ErrorSolutions\Contracts\ProvidesSolution;
 use Illuminate\Support\Str;
 
 /**

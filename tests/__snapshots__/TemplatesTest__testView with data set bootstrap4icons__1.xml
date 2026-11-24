@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="http://localhost"><i class=" mr-2" aria-hidden="true"/>Home
+                    </a>
+  </li>
+  <li class="breadcrumb-item active"><i class=" mr-2" aria-hidden="true"/>Blog
+                </li>
+  <li class="breadcrumb-item active"><i class=" mr-2" aria-hidden="true"/>Sample Category
+                </li>
+</ol>
