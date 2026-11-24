@@ -13,16 +13,17 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.0",
-        "laravel/framework": "^8.0|^9.0"
+        "php": "^8.2",
+        "laravel/framework": "^12.71|^13.40",
+        "spatie/error-solutions": "^1.0|^2.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9",
-        "php-coveralls/php-coveralls": "^2.5.2",
-        "spatie/phpunit-snapshot-assertions": "^4.0"
+        "orchestra/testbench": "^10.0|^11.0",
+        "phpunit/phpunit": "^11.0|^12.0|^13.0",
+        "spatie/phpunit-snapshot-assertions": "^5.0",
+        "livewire/livewire": "^3.0|^4.0"
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
             "Rivalex\\Breadcrumbs\\": "classes/"
@@ -33,6 +34,9 @@
             "App\\": "tests/",
             "BreadcrumbsTests\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
     },
     "extra": {
         "laravel": {

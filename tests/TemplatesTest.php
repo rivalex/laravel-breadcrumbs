@@ -4,6 +4,7 @@ namespace BreadcrumbsTests;
 
 use Breadcrumbs;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class TemplatesTest extends TestCase
 {
@@ -34,7 +35,7 @@ class TemplatesTest extends TestCase
         ];
     }
 
-    public function viewProvider(): Generator
+    public static function viewProvider(): Generator
     {
         foreach (glob(__DIR__ . '/../views/*.blade.php') as $filename) {
             $name = basename($filename, '.blade.php');
@@ -42,11 +43,22 @@ class TemplatesTest extends TestCase
         }
     }
 
-    /** @dataProvider viewProvider */
+    #[DataProvider('viewProvider')]
     public function testView($view)
     {
         $html = Breadcrumbs::view("breadcrumbs::$view", 'category', $this->category)->toHtml();
 
         $this->assertMatchesXmlSnapshot($html);
+    }
+
+    #[DataProvider('viewProvider')]
+    public function testTitlesAreEscaped($view)
+    {
+        $this->category->title = '<script>alert(1)</script>';
+
+        $html = Breadcrumbs::view("breadcrumbs::$view", 'category', $this->category)->toHtml();
+
+        $this->assertStringNotContainsString('<script>', $html);
+        $this->assertStringContainsString('&lt;script&gt;', $html);
     }
 }

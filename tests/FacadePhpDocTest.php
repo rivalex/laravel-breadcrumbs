@@ -10,10 +10,11 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionType;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class FacadePhpDocTest extends TestCase
 {
-    public function tags()
+    public static function tags()
     {
         $code = file_get_contents(__DIR__ . '/../classes/BreadcrumbsManager.php');
 
@@ -38,12 +39,12 @@ class FacadePhpDocTest extends TestCase
         }
     }
 
-    /** @dataProvider tags */
+    #[DataProvider('tags')]
     public function testFullyQualifiedClassNames($class, $line)
     {
         // IDE Helper (v2.4.3) doesn't rewrite class names to FQCNs, so make sure only
         // fully qualified class names and built-in types are used in the Manager class
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/^(\\\\.*|array|bool|callable|int|mixed|null|string|void)$/',
             $class,
             "Must use fully qualified class names in BreadcrumbsManger PhpDoc: $line"
@@ -64,7 +65,7 @@ class FacadePhpDocTest extends TestCase
         collect($methods)
             ->filter(function (ReflectionMethod $method) {
                 // Ignore magic methods
-                return !Str::startsWith($method->name, '__');
+                return !Str::startsWith($method->name, '__') && $method->name !== 'macroCall';
             })
             ->filter(function (ReflectionMethod $method) use ($macroableMethods) {
                 // Ignore methods from the Macroable trait (use @mixin instead)
@@ -110,7 +111,7 @@ class FacadePhpDocTest extends TestCase
             ->implode(', ');
     }
 
-    private function returnTypeDoc(ReflectionType $reflectionType = null): ?string
+    private function returnTypeDoc(?ReflectionType $reflectionType = null): ?string
     {
         if (!$reflectionType) {
             return '';

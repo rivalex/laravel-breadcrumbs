@@ -9,7 +9,8 @@ use Rivalex\Breadcrumbs\Exceptions\InvalidBreadcrumbException;
 use Rivalex\Breadcrumbs\Exceptions\UnnamedRouteException;
 use Rivalex\Breadcrumbs\Exceptions\ViewNotSetException;
 use ErrorException;
-use Facade\IgnitionContracts\ProvidesSolution;
+use Spatie\ErrorSolutions\Contracts\ProvidesSolution;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Route;
 
 class IgnitionTest extends TestCase
@@ -25,7 +26,7 @@ class IgnitionTest extends TestCase
         $this->assertMatchesSnapshot($solution->getDocumentationLinks());
     }
 
-    public function dataOneOrManyConfigFiles()
+    public static function dataOneOrManyConfigFiles()
     {
         return [
             'Single config file' => [['routes/breadcrumbs.php']],
@@ -33,7 +34,7 @@ class IgnitionTest extends TestCase
         ];
     }
 
-    /** @dataProvider dataOneOrManyConfigFiles */
+    #[DataProvider('dataOneOrManyConfigFiles')]
     public function testDuplicateBreadcrumbSolution(array $files)
     {
         Config::set('breadcrumbs.files', $files);
@@ -50,7 +51,7 @@ class IgnitionTest extends TestCase
         }
     }
 
-    /** @dataProvider dataOneOrManyConfigFiles */
+    #[DataProvider('dataOneOrManyConfigFiles')]
     public function testInvalidBreadcrumbSolution(array $files)
     {
         Config::set('breadcrumbs.files', $files);
@@ -63,7 +64,7 @@ class IgnitionTest extends TestCase
         }
     }
 
-    /** @dataProvider dataOneOrManyConfigFiles */
+    #[DataProvider('dataOneOrManyConfigFiles')]
     public function testMissingRouteBoundBreadcrumbSolution(array $files)
     {
         Config::set('breadcrumbs.files', $files);

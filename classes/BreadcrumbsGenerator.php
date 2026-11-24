@@ -91,7 +91,7 @@ class BreadcrumbsGenerator
      * @param string|null $url The URL of the page.
      * @param array $data Optional associative array of additional data to pass to the view.
      */
-    public function push(string $title, string $url = null, array $data = []): void
+    public function push(string $title, ?string $url = null, array $data = []): void
     {
         $this->breadcrumbs->push((object) array_merge($data, compact('title', 'url')));
     }
